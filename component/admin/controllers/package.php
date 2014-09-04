@@ -54,9 +54,13 @@ class LocaliseControllerPackage extends JControllerForm
 			}
 		}
 
-		// Set the id, and path in the session
-		$app->setUserState('com_localise.edit.package.id', $id);
+		// Clear the state if it's a new record.
+		if (empty($id))
+		{
+			$app->setUserState('com_localise.edit.package.id', null);
+		}
 
+		// Set the path in the session
 		if (!empty($name))
 		{
 			$app->setUserState('com_localise.package.name', $name);
