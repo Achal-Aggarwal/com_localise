@@ -46,6 +46,7 @@ class LocaliseModelPackageFile extends JModelAdmin
 
 		$id = $app->getUserState('com_localise.edit.package.id');
 		$this->setState('package.id', $id);
+		$this->setState('packagefile.id', $id);
 	}
 
 	/**
@@ -490,6 +491,7 @@ class LocaliseModelPackageFile extends JModelAdmin
 		*/
 		$id = LocaliseHelper::getFileId($path);
 		$this->setState('package.id', $id);
+		$this->setState('packagefile.id', $id);
 		JFactory::getApplication()->setUserState('com_localise.edit.package.id', $id);
 
 		// Bind the rules.
