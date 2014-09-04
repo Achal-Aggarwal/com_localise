@@ -21,7 +21,7 @@ jimport('joomla.client.helper');
  *
  * @since       1.0
  */
-class LocaliseModelPackageFile extends JModelForm
+class LocaliseModelPackageFile extends JModelAdmin
 {
 	/**
 	 * Method to auto-populate the model state.
@@ -46,36 +46,6 @@ class LocaliseModelPackageFile extends JModelForm
 
 		$id = $app->getUserState('com_localise.edit.package.id');
 		$this->setState('package.id', $id);
-	}
-
-	/**
-	 * Method to override check-out a row for editing.
-	 *
-	 * @param   int  $pk  The ID of the primary key.
-	 *
-	 * @return  boolean
-	 */
-	public function checkout($pk = null)
-	{
-		// Initialise variables.
-		$pk = (!empty($pk)) ? $pk : (int) $this->getState('package.id');
-
-		return parent::checkout($pk);
-	}
-
-	/**
-	 * Method to checkin a row.
-	 *
-	 * @param   int  $pk  The ID of the primary key.
-	 *
-	 * @return  boolean
-	 */
-	public function checkin($pk = null)
-	{
-		// Initialise variables.
-		$pk = (!empty($pk)) ? $pk : (int) $this->getState('package.id');
-
-		return parent::checkin($pk);
 	}
 
 	/**

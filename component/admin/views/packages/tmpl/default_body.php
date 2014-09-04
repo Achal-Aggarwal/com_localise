@@ -14,13 +14,16 @@ $user     = JFactory::getUser();
 <?php foreach($this->items as $i => $item) : ?>
 	<?php if ($item->name !== 'core') : ?>
 		<?php $canEdit = $user->authorise('localise.edit', 'com_localise.'.$item->id); ?>
+		<?php $canCheckin = $user->authorise('core.manage', 'com_checkin') || $item->checked_out == $user->get('id') || $item->checked_out == 0; ?>
 		<tr class="row<?php echo $i % 2; ?>">
 			<td width="20" class="center hidden-phone"><?php echo $i + 1; ?></td>
 			<td width="20" class="center hidden-phone">
-				<?php if (empty($item->checked_out)) : ?>
-					<?php echo JHtml::_('grid.id', $i, $item->name); ?>
+				<?php if ($item->checked_out) : ?>
+					<?php $prefix = $item->core ? 'package.' : 'packagefile.'; ?>
+					<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, $prefix, $canCheckin); ?>
+					<input type="checkbox" id="cb<?php echo $i;?>" class="hidden" name="cid[]" value="<?php echo $item->id;?>">
 				<?php else:?>
-					<?php echo JHtml::_('jgrid.checkedout', $item->editor, $item->checked_out_time); ?>
+					<?php echo JHtml::_('grid.id', $i, $item->name); ?>
 				<?php endif; ?>
 			</td>
 			<td>
@@ -31,11 +34,11 @@ $user     = JFactory::getUser();
 				<?php elseif ($item->writable && $canEdit) : ?>
 					<span class="localise-icon">
 					<?php if ($item->core) : ?>
-						<a class="hasTooltip" href="<?php echo JRoute::_('index.php?option=com_localise&task=package.edit&cid[]=' . $item->name); ?>" title="<?php echo JText::_('COM_LOCALISE_TOOLTIP_PACKAGES_EDIT'); ?>">
+						<a class="hasTooltip" href="<?php echo JRoute::_('index.php?option=com_localise&task=package.edit&id=' . $item->id . '&cid[]=' . $item->name); ?>" title="<?php echo JText::_('COM_LOCALISE_TOOLTIP_PACKAGES_EDIT'); ?>">
 						<?php echo JText::sprintf('COM_LOCALISE_TEXT_PACKAGES_TITLE', JText::_($item->title), $item->name); ?>
 						</a>
 					<?php else: ?>
-						<a class="hasTooltip" href="<?php echo JRoute::_('index.php?option=com_localise&task=packagefile.edit&cid[]=' . $item->name); ?>" title="<?php echo JText::_('COM_LOCALISE_TOOLTIP_PACKAGES_EDIT'); ?>">
+						<a class="hasTooltip" href="<?php echo JRoute::_('index.php?option=com_localise&task=packagefile.edit&id=' . $item->id . '&cid[]=' . $item->name); ?>" title="<?php echo JText::_('COM_LOCALISE_TOOLTIP_PACKAGES_EDIT'); ?>">
 						<?php echo JText::sprintf('COM_LOCALISE_TEXT_PACKAGES_TITLE', JText::_($item->title), $item->name); ?>
 						</a>
 					<?php endif; ?>

@@ -16,7 +16,7 @@ defined('_JEXEC') or die;
  * @subpackage  Localise
  * @since       1.0
  */
-class LocaliseControllerLanguages extends JControllerLegacy
+class LocaliseControllerLanguages extends JControllerAdmin
 {
 	/**
 	 * Method to purge the localise table.
@@ -30,5 +30,21 @@ class LocaliseControllerLanguages extends JControllerLegacy
 		$model = $this->getModel('languages');
 		$model->purge();
 		$this->setRedirect(JRoute::_('index.php?option=com_localise&view=languages', false));
+	}
+
+	/**
+	 * Proxy for getModel.
+	 *
+	 * @param   string	$name	 The name of the model.
+	 * @param   string	$prefix	 The prefix for the PHP class name.
+	 *
+	 * @return  JModel
+	 * @since   1.6
+	 */
+	public function getModel($name = 'Language', $prefix = 'LocaliseModel', $config = array('ignore_request' => true))
+	{
+		$model = parent::getModel($name, $prefix, $config);
+
+		return $model;
 	}
 }

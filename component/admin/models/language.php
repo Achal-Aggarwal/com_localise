@@ -18,7 +18,7 @@ jimport('joomla.access.rules');
  *
  * @since  1.0
  */
-class LocaliseModelLanguage extends JModelForm
+class LocaliseModelLanguage extends JModelAdmin
 {
 	protected $context = 'com_localise.language';
 
@@ -40,40 +40,6 @@ class LocaliseModelLanguage extends JModelForm
 		$this->setState('language.id', $id);
 
 		parent::populateState();
-	}
-
-	/**
-	 * Method to override check-out a row for editing.
-	 *
-	 * @param   int  $pk  The ID of the primary key.
-	 *
-	 * @return  boolean
-	 */
-	public function checkout($pk = null)
-	{
-		// Initialise variables.
-		$pk = (!empty($pk))
-			? $pk
-			: (int) $this->getState('language.id');
-
-		return parent::checkout($pk);
-	}
-
-	/**
-	 * Method to checking a row.
-	 *
-	 * @param   int  $pk  The ID of the primary key.
-	 *
-	 * @return  boolean
-	 */
-	public function checkin($pk = null)
-	{
-		// Initialise variables.
-		$pk = (!empty($pk))
-			? $pk
-			: (int) $this->getState('language.id');
-
-		return parent::checkin($pk);
 	}
 
 	/**

@@ -20,7 +20,7 @@ jimport('joomla.access.rules');
  *
  * @since  1.0
  */
-class LocaliseModelTranslation extends JModelForm
+class LocaliseModelTranslation extends JModelAdmin
 {
 	protected $item;
 
