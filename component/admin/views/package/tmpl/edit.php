@@ -47,21 +47,25 @@ JFactory::getDocument()->addScriptDeclaration("
 		}
 		else if (document.formvalidator.isValid(document.id('localise-package-form')))
 		{
-			jQuery.ajax({
-				url: "<?php echo htmlspecialchars_decode(JRoute::_('index.php?option=com_localise&task=package.check')); ?>",
-				data: {name: jQuery('#jform_name').val(), id: jQuery('#jform_id').val()},
-				success: function(result){
-					json_data = jQuery.parseJSON(result);
+			<?php if ($this->item->id > 0) : ?>
+				jQuery.ajax({
+					url: "<?php echo htmlspecialchars_decode(JRoute::_('index.php?option=com_localise&task=package.check')); ?>",
+					data: {name: jQuery('#jform_name').val(), id: jQuery('#jform_id').val()},
+					success: function(result){
+						json_data = jQuery.parseJSON(result);
 
-					// Ask for overwrite confirmation if another package with same name exist already.
-					if (json_data.data.exist && !confirm("COM_LOCALISE_PACKAGE_OVERWRITE"))
-					{
-						return false;
+						// Ask for overwrite confirmation if another package with same name exist already.
+						if (json_data.data.exist && !confirm("COM_LOCALISE_PACKAGE_OVERWRITE"))
+						{
+							return false;
+						}
+
+						submitform(task);
 					}
-
-					submitform(task);
-				}
-			});
+				});
+			<?php else : ?>
+				submitform(task);
+			<?php endif;?>
 		}
 	}
 </script>
