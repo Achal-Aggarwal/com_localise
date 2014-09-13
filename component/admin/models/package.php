@@ -283,6 +283,26 @@ class LocaliseModelPackage extends JModelAdmin
 	 *
 	 * @return  boolean  success or failure
 	 */
+	public function checkPackgeExist($id, $path)
+	{
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true)
+			->select($db->quoteName('path'))
+			->from($db->quoteName('#__localise'))
+			->where($db->quoteName('path') . ' = ' . $db->quote($path))
+			->where($db->quoteName('id') . ' != ' . $id);
+		$db->setQuery($query);
+
+		return $db->loadResult('path') !== null;
+	}
+
+	/**
+	 * Method to save data
+	 *
+	 * @param   array  $data  the data to save
+	 *
+	 * @return  boolean  success or failure
+	 */
 	public function save($data)
 	{
 		// When editing a package, find the original path
@@ -312,6 +332,13 @@ class LocaliseModelPackage extends JModelAdmin
 		$package  = $this->getItem();
 		$path     = JPATH_COMPONENT_ADMINISTRATOR . "/packages/$name.xml";
 		$manifest = $name;
+
+		if (empty($originalId) && ((int) LocaliseHelper::getFileId($path)) > 0)
+		{
+			$this->setError(JText::sprintf('COM_LOCALISE_ERROR_PACKAGE_EXIST', $path));
+
+			return false;
+		}
 
 		// $client   = $package->client ? $package->client : 'site';
 

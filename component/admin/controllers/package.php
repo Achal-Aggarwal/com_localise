@@ -178,4 +178,24 @@ class LocaliseControllerPackage extends JControllerForm
 		$url = 'index.php?option=com_localise&task=package.edit&cid[]=' . $name;
 		$this->setRedirect(JRoute::_($url, false));
 	}
+
+	public function check()
+	{
+		$app   = JFactory::getApplication();
+		$name  = $app->input->get('name');
+		$id    = $app->input->get('id', 0);
+		$path  = JPATH_COMPONENT_ADMINISTRATOR . "/packages/$name.xml";
+		$model = $this->getModel();
+
+		$response = array(
+			'name' => $name,
+			'path' => $path,
+			'exist' => $model->checkPackgeExist($id, $path)
+		);
+
+		ob_clean();
+		header('Content-type: text/JSON; charset=utf-8');
+		echo new JResponseJson($response);
+		exit;
+	}
 }
